@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: mimo2api
+    env: docker
+    repo: https://github.com/qqlittle-2026/MiMo2API
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /v1/models
+    envVars:
+      - key: MIMO_SERVICE_TOKEN
+        sync: false
+      - key: MIMO_USER_ID
+        sync: false
+      - key: MIMO_XIAOMICHATBOT_PH
+        sync: false
+      - key: MIMO_API_KEYS
+        value: sk-mimo
+      - key: MIMO_ADMIN_PASSWORD
+        value: admin

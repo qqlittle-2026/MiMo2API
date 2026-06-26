@@ -69,8 +69,34 @@ class ConfigManager:
         self.account_idx = 0
         self.load()
 
+    def _load_from_env(self):
+        """从环境变量加载配置"""
+        import os
+        service_token = os.environ.get('MIMO_SERVICE_TOKEN')
+        user_id = os.environ.get('MIMO_USER_ID')
+        xiaomichatbot_ph = os.environ.get('MIMO_XIAOMICHATBOT_PH')
+        api_keys = os.environ.get('MIMO_API_KEYS')
+        admin_password = os.environ.get('MIMO_ADMIN_PASSWORD')
+
+        if service_token and user_id and xiaomichatbot_ph:
+            accounts = [MimoAccount(
+                service_token=service_token,
+                user_id=user_id,
+                xiaomichatbot_ph=xiaomichatbot_ph
+            )]
+            self.config = Config(
+                api_keys=api_keys or 'sk-mimo',
+                admin_password=admin_password or 'admin',
+                mimo_accounts=accounts
+            )
+            print("[Config] Loaded from environment variables")
+            return True
+        return False
+
     def load(self):
-        """加载配置"""
+        """加载配置（优先环境变量，其次文件）"""
+        if self._load_from_env():
+            return
         if not self.config_file.exists():
             self.save()
             return
