@@ -1,10 +1,11 @@
 services:
   - type: web
     name: mimo2api
-    env: docker
+    env: python
     repo: https://github.com/qqlittle-2026/MiMo2API
     branch: main
-    dockerfilePath: ./Dockerfile
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
     healthCheckPath: /v1/models
     envVars:
       - key: MIMO_SERVICE_TOKEN
